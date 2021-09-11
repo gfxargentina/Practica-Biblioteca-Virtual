@@ -2,7 +2,7 @@
 
 -npm i init -y
 
-### instalacion de modulos para trabajar con graphql typescript mysql etc
+### instalacion de modulos para trabajar con graphql typescript mysql en produccion
 
 -npm i express apollo-server-express mysql typeorm reflect-metadata type-graphql
 
