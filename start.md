@@ -8,7 +8,7 @@
 
 ### instalacion de modulos usados solo cuando estamos desarrollando
 
--npm i -D typescript ts-node @types/express @types/node nodemon
+-npm i -D typescript ts-node @types/express @types/node nodemon dotenv
 
 ### Crea Archivo de configuracion de typescript
 
@@ -21,4 +21,19 @@
 
 ### archivo package,json
 
--agregar en script: "start:dev": "nodemon src/main.ts --exec ts-node" ,exec ejecuta ts-node que es el paquete de typescript para node, ejecuta codigo typescript directamente sin compilarlo
+-agregar en script: "dev": "nodemon src/main.ts --exec ts-node" ,exec ejecuta ts-node que es el paquete de typescript para node, ejecuta codigo typescript directamente sin compilarlo
+
+### archivo configuracion type orm
+
+carpeta config: typeorm.ts
+
+agregar a main.ts :  
+import { connect } from "./config/typeorm";
+
+connect()
+
+instalar modulo postgresql: npm i pg --save
+
+### archivo configuracion variables de entorno
+
+carpeta config: environment.ts

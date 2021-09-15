@@ -1,7 +1,10 @@
 import express from "express";
 import "reflect-metadata";
 import { ApolloServer } from "apollo-server-express";
-import { ApolloServerPluginLandingPageDisabled } from "apollo-server-core";
+import {
+  ApolloServerPluginLandingPageDisabled,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} from "apollo-server-core";
 import { BookResolver } from "./resolvers/book.resolver";
 
 //esto convierte el codigo typescrypt a graphql
@@ -12,7 +15,13 @@ export async function startServer() {
   const app = express();
 
   const apolloServer = new ApolloServer({
-    schema: await buildSchema({ resolvers: [BookResolver] }),
+    schema: await buildSchema({
+      resolvers: [BookResolver],
+    }),
+    plugins: [
+      ApolloServerPluginLandingPageDisabled(),
+      ApolloServerPluginLandingPageGraphQLPlayground(),
+    ],
   });
 
   await apolloServer.start();
