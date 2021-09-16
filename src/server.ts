@@ -6,6 +6,7 @@ import {
   ApolloServerPluginLandingPageGraphQLPlayground,
 } from "apollo-server-core";
 import { BookResolver } from "./resolvers/book.resolver";
+import { AuthorResolver } from "./resolvers/author.resolver";
 
 //esto convierte el codigo typescrypt a graphql
 import { buildSchema } from "type-graphql";
@@ -16,7 +17,7 @@ export async function startServer() {
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [BookResolver],
+      resolvers: [BookResolver, AuthorResolver],
     }),
     plugins: [
       ApolloServerPluginLandingPageDisabled(),
