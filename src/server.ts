@@ -20,6 +20,7 @@ export async function startServer() {
       resolvers: [BookResolver, AuthorResolver],
     }),
     plugins: [
+      //habilitan el playground clasico de graphql
       ApolloServerPluginLandingPageDisabled(),
       ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
