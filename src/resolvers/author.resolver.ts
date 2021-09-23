@@ -58,7 +58,7 @@ export class AuthorResolver {
   //Query- devuelve todos los autores
   @Query(() => [Author])
   async getAllAuthors(): Promise<Author[]> {
-    return await this.authorRepository.find();
+    return await this.authorRepository.find({ relations: ["books"] });
   }
 
   //Query - devuelve 1 author por id
@@ -75,8 +75,9 @@ export class AuthorResolver {
       }
       return author;
     } catch (e) {
-      //throw new Error(e);
-      console.log("Verificar error");
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
     }
   }
 

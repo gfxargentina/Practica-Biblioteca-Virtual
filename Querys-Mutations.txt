@@ -1,0 +1,36 @@
+//TRAE TODOS LOS AUTORES
+
+query{
+  getAllAuthors{
+    id
+    fullName
+    createdAt
+    books{
+      id
+      title
+    }
+  }
+}
+
+//TRAE AUTOR POR ID
+
+query{
+  getOneAuthor(input: {id: 1}){
+    id
+    fullName
+    createdAt
+  }
+}
+
+//CREA UN LIBRO
+
+mutation{
+  createBook(input: { title: "Cinco Esquinas", author: 2 }){
+    id
+    title
+    author{
+      fullName
+    }
+    createdAt
+  }
+}
