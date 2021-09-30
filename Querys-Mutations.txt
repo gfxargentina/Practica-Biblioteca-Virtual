@@ -34,3 +34,33 @@ mutation{
     createdAt
   }
 }
+
+//TRAE TODOS LOS LIBROS
+query{
+  getAllBooks{
+    title
+    author{
+      id
+      fullName
+    }
+  }
+}
+
+//TRAER UN LIBRO POR ID
+query{
+  getBookById(input: {id: 2}){
+    id
+    title
+    author{
+      id
+      fullName
+      createdAt
+    }
+    createdAt
+  }
+}
+
+//ELIMINAR UN LIBRO POR ID
+mutation{
+  deleteBook(bookId: {id: 2})
+}
