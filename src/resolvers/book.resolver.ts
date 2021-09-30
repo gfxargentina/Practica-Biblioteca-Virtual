@@ -122,7 +122,7 @@ export class BookResolver {
     @Arg("input", () => BookUpdateInput) input: BookUpdateInput
   ): Promise<Boolean | undefined> {
     try {
-      const parsedInput = await this.parseInput(input);
+      const parsedInput: any = await this.parseInput(input);
       await this.bookRepository.update(bookId.id, parsedInput);
       return true;
     } catch (error) {
@@ -131,6 +131,22 @@ export class BookResolver {
       }
     }
   }
+
+  //Mutation - Eliminar un libro
+  @Mutation(() => Boolean)
+  async deleteBook(
+    @Arg("bookId", () => BookIdInput) bookId: BookIdInput
+  ): Promise<Boolean | undefined> {
+    try {
+      await this.bookRepository.delete(bookId.id);
+      return true;
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
+
   private async parseInput(input: BookUpdateInput) {
     try {
       const _input: BookUpdateParsedInput = {};
