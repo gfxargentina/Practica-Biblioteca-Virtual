@@ -1,12 +1,14 @@
 import { Mutation, Resolver, Arg, InputType, Field, Query } from "type-graphql";
 import { getRepository, Repository } from "typeorm";
 import { Author } from "../entity/author.entity";
+import { Length } from "class-validator";
 
 //Los InputType son para especificarle lo que hay que pasarle al mutation o query por argumento Arg
 //input para crear 1 author
 @InputType()
 class AuthorInput {
   @Field()
+  @Length(3, 64)
   fullName!: string;
 }
 
@@ -25,6 +27,7 @@ class AuthorUpdateInput {
   id!: number;
 
   @Field()
+  @Length(3, 64)
   //? campo opcional
   fullName?: string;
 }

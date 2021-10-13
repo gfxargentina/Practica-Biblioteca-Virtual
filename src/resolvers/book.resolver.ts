@@ -2,11 +2,13 @@ import { Mutation, Resolver, Arg, InputType, Field, Query } from "type-graphql";
 import { getRepository, Repository } from "typeorm";
 import { Author } from "../entity/author.entity";
 import { Book } from "../entity/book.entity";
+import { Length } from "class-validator";
 
 //input para crear un libro
 @InputType()
 class BookInput {
   @Field()
+  @Length(3, 64)
   title!: string;
 
   @Field()
@@ -24,6 +26,7 @@ class BookIdInput {
 @InputType()
 class BookUpdateInput {
   @Field(() => String, { nullable: true })
+  @Length(3, 64)
   title?: string;
 
   @Field(() => Number, { nullable: true })
@@ -33,6 +36,7 @@ class BookUpdateInput {
 @InputType()
 class BookUpdateParsedInput {
   @Field(() => String, { nullable: true })
+  @Length(3, 64)
   title?: string;
 
   @Field(() => Author, { nullable: true })

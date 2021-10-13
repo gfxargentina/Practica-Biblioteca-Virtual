@@ -1,3 +1,16 @@
+//REGISTRAR UN NUEVO USUARIO
+mutation {
+  register(input:{ fullName:"Patricio Rey", email:"redondos@gmail.com", password:"12345678" } )
+  {
+    id
+    fullName
+    email
+    password
+  }
+}
+
+
+
 //TRAE TODOS LOS AUTORES
 
 query{
@@ -64,3 +77,4 @@ query{
 mutation{
   deleteBook(bookId: {id: 2})
 }
+
