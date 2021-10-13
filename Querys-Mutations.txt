@@ -9,6 +9,14 @@ mutation {
   }
 }
 
+//lOGIN
+mutation{
+  login(input: {email: "redondos@gmail.com", password:"12345678"})
+  {
+    userId
+    jwt
+  }
+}
 
 
 //TRAE TODOS LOS AUTORES
