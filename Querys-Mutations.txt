@@ -18,6 +18,11 @@ mutation{
   }
 }
 
+//TOKEN JWT
+{
+  "authorization" : "Bearer token"
+}
+
 
 //TRAE TODOS LOS AUTORES
 

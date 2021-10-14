@@ -25,6 +25,7 @@ export async function startServer() {
       ApolloServerPluginLandingPageDisabled(),
       ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
+    context: ({ req, res }) => ({ req, res }),
   });
 
   await apolloServer.start();
