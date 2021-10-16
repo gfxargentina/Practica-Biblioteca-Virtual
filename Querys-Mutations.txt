@@ -23,6 +23,15 @@ mutation{
   "authorization" : "Bearer token"
 }
 
+//CREAR UN AUTHOR
+mutation{
+  createAuthor(input: { fullName: "Autor prueba" })
+  {
+    id
+    fullName
+  }
+} 
+
 
 //TRAE TODOS LOS AUTORES
 
@@ -59,6 +68,11 @@ mutation{
     }
     createdAt
   }
+}
+
+//ELIMINAR UN AUTHOR
+mutation{
+  deleteOneauthor(input: {id: 4} )
 }
 
 //TRAE TODOS LOS LIBROS

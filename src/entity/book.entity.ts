@@ -20,7 +20,8 @@ export class Book {
   title!: string;
 
   @Field(() => Author)
-  @ManyToOne(() => Author, (author) => author.books)
+  //onDelete, cuando borre un author borra todos sus libros tambien
+  @ManyToOne(() => Author, (author) => author.books, { onDelete: "CASCADE" })
   author!: Author;
 
   @Field()

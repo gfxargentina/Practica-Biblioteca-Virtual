@@ -105,7 +105,9 @@ export class BookResolver {
   @UseMiddleware(isAuth)
   async getAllBooks(): Promise<Book[] | undefined> {
     try {
-      return await this.bookRepository.find({ relations: ["author"] });
+      return await this.bookRepository.find({
+        relations: ["author", "author.books"],
+      });
     } catch (e) {
       if (e instanceof Error) {
         throw new Error(e.message);
@@ -120,7 +122,7 @@ export class BookResolver {
   ): Promise<Book | undefined> {
     try {
       const book = await this.bookRepository.findOne(input.id, {
-        relations: ["author"],
+        relations: ["author", "author.books"],
       });
       if (!book) {
         const error = new Error();
@@ -158,7 +160,9 @@ export class BookResolver {
     @Arg("bookId", () => BookIdInput) bookId: BookIdInput
   ): Promise<Boolean | undefined> {
     try {
-      await this.bookRepository.delete(bookId.id);
+      const result = await this.bookRepository.delete(bookId.id);
+      if (result.affected === 0)
+        throw new Error("El libro que quiere eliminar NO existe");
       return true;
     } catch (e) {
       if (e instanceof Error) {

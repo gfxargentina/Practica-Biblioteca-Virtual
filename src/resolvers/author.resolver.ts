@@ -107,8 +107,16 @@ export class AuthorResolver {
   @Mutation(() => Boolean)
   async deleteOneauthor(
     @Arg("input", () => AuthorIdInput) input: AuthorIdInput
-  ): Promise<Boolean> {
-    await this.authorRepository.delete(input.id);
-    return true;
+  ): Promise<Boolean | undefined> {
+    try {
+      const author = await this.authorRepository.findOne(input.id);
+      if (!author) throw new Error("El autor no existe");
+      await this.authorRepository.delete(input.id);
+      return true;
+    } catch (error) {
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      }
+    }
   }
 }
