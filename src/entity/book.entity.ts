@@ -25,6 +25,10 @@ export class Book {
   author!: Author;
 
   @Field()
+  @Column()
+  isOnLoan!: boolean;
+
+  @Field()
   @CreateDateColumn({ type: "timestamp" })
   createdAt!: string;
 }

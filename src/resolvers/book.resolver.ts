@@ -100,7 +100,7 @@ export class BookResolver {
     }
   }
 
-  //Query - devuelvo todos los libros
+  //Query - devuelve todos los libros
   @Query(() => [Book])
   @UseMiddleware(isAuth)
   async getAllBooks(): Promise<Book[] | undefined> {
