@@ -105,3 +105,33 @@ mutation{
   deleteBook(bookId: {id: 2})
 }
 
+//DEVUELVE TODOS LOS PRESTAMOS
+query{ 
+  getAllLoans{
+    id    
+    createdAt
+    returned_date
+    books{
+      title
+      author{
+        fullName        
+      }
+    }
+    
+  }
+}
+
+//CREA UN PRESTAMO
+mutation {
+  loan(input: {
+    returned_date:"11/16/2021", bookId: 8}){
+    createdAt
+    returned_date
+    books{
+      id
+      title
+    }
+    
+  }
+}
+

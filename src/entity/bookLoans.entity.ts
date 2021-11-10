@@ -4,29 +4,26 @@ import {
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
-  OneToMany,
+  ManyToOne,
 } from "typeorm";
+import { Author } from "./author.entity";
+import { BookLoan } from "./bookLoan.entity";
 
 @ObjectType()
 @Entity() //para que la clase sea interpretada por typeorm
-export class User {
+export class BookLoans {
   @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
   @Field()
   @Column()
-  fullName!: string;
+  isOnLoan!: Boolean;
 
-  @Field()
   @Column()
-  email!: string;
+  books!: number;
 
   @Field()
-  @Column()
-  password!: string;
-
-  @Field()
-  @CreateDateColumn({ type: "timestamp" })
-  createdAt!: string;
+  @CreateDateColumn()
+  createdAt!: Date;
 }

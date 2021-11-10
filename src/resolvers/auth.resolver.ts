@@ -46,6 +46,9 @@ class LoginResponse {
   userId!: number;
 
   @Field()
+  fullName!: string;
+
+  @Field()
   jwt!: string;
 }
 

@@ -13,6 +13,8 @@ import { Author } from "../entity/author.entity";
 import { Book } from "../entity/book.entity";
 import { Length } from "class-validator";
 import { IContext, isAuth } from "../middlewares/auth.middleware";
+import { BookLoan } from "../entity/bookLoan.entity";
+import { query } from "express";
 
 //input para crear un libro
 @InputType()
@@ -53,16 +55,28 @@ class BookUpdateParsedInput {
   author?: Author;
 }
 
+// Loan input
+@InputType()
+class LoanInput {
+  @Field()
+  returned_date!: string;
+
+  @Field()
+  bookId?: number;
+}
+
 @Resolver()
 export class BookResolver {
   //creamos los repositorios que utilizaremos
   bookRepository: Repository<Book>;
   authorRepository: Repository<Author>;
+  bookLoanRepository: Repository<BookLoan>;
 
   //para inicializar los repositorios
   constructor() {
     this.bookRepository = getRepository(Book);
     this.authorRepository = getRepository(Author);
+    this.bookLoanRepository = getRepository(BookLoan);
   }
 
   //Mutation - Crear un libro
@@ -191,5 +205,43 @@ export class BookResolver {
         throw new Error(e.message);
       }
     }
+  }
+  //Mutation - Prestar un libro
+  @Mutation(() => BookLoan)
+  async loan(
+    @Arg("input", () => LoanInput) input: LoanInput
+  ): Promise<BookLoan | undefined> {
+    try {
+      const book: Book | undefined = await this.bookRepository.findOne(
+        input.bookId
+      );
+      if (!book) {
+        const error = new Error();
+        error.message = "El libro no existe";
+        throw error;
+      }
+
+      const loanBook = await this.bookLoanRepository.insert({
+        returned_date: input.returned_date,
+        books: book,
+      });
+      const result = await this.bookLoanRepository.findOne(
+        loanBook.identifiers[0].id,
+        { relations: ["books"] }
+      );
+      return result;
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
+
+  //Query devuelve todos los prestamos
+  @Query(() => [BookLoan])
+  async getAllLoans(): Promise<BookLoan[]> {
+    return await this.bookLoanRepository.find({
+      relations: ["books", "books.author"],
+    });
   }
 }

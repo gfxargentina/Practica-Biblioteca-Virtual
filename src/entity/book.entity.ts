@@ -5,8 +5,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   ManyToOne,
+  OneToMany,
 } from "typeorm";
 import { Author } from "./author.entity";
+import { BookLoan } from "./bookLoan.entity";
 
 @ObjectType()
 @Entity() //para que la clase sea interpretada por typeorm
@@ -24,9 +26,13 @@ export class Book {
   @ManyToOne(() => Author, (author) => author.books, { onDelete: "CASCADE" })
   author!: Author;
 
-  @Field()
-  @Column()
-  isOnLoan!: boolean;
+  @Field(() => Boolean, { nullable: true })
+  @Column({ default: false })
+  isOnLoan?: Boolean;
+
+  @Field(() => [BookLoan], { nullable: true })
+  @OneToMany(() => BookLoan, (bookLoan) => bookLoan.books)
+  bookLoan!: BookLoan[];
 
   @Field()
   @CreateDateColumn({ type: "timestamp" })
