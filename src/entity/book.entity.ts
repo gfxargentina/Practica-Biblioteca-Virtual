@@ -6,6 +6,8 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
 import { Author } from "./author.entity";
 import { BookLoan } from "./bookLoan.entity";

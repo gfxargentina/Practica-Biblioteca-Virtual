@@ -8,10 +8,13 @@ import {
   Field,
   Arg,
   ObjectType,
+  UseMiddleware,
+  Query,
 } from "type-graphql";
 import { getRepository, Repository } from "typeorm";
 import { environment } from "../config/environment";
 import { User } from "../entity/user.entity";
+import { isAuth } from "../middlewares/auth.middleware";
 
 @InputType()
 class UserInput {
@@ -37,6 +40,13 @@ class LoginInput {
 
   @Field()
   password!: string;
+}
+
+//input usuario por id
+@InputType()
+class UserIdInput {
+  @Field(() => Number)
+  id!: number;
 }
 
 //clase ObjectType() para la respuesta del login
@@ -129,6 +139,39 @@ export class AuthResolver {
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(error.message);
+      }
+    }
+  }
+
+  //Query - devuelve todos los usuarios
+  @Query(() => [User])
+  @UseMiddleware(isAuth)
+  async getAllUsers(): Promise<User[] | undefined> {
+    try {
+      return await this.userRepository.find();
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
+
+  //Query - trae un usuario por id
+  @Query(() => User)
+  async getUserById(
+    @Arg("input", () => UserIdInput) input: UserIdInput
+  ): Promise<User | undefined> {
+    try {
+      const user = await this.userRepository.findOne(input.id);
+      if (!user) {
+        const error = new Error();
+        error.message = "El usuario no se encuentra";
+        throw error;
+      }
+      return user;
+    } catch (e) {
+      if (e instanceof Error) {
+        throw new Error(e.message);
       }
     }
   }

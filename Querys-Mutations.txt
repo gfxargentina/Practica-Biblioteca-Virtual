@@ -135,3 +135,20 @@ mutation {
   }
 }
 
+// trae todos los usuarios
+query {
+  getAllUsers{
+    id
+    fullName
+  }
+}
+
+//trae usuario por id
+query {
+  getUserById(input: {id: 2}){
+    fullName
+    email
+  }
+}
+
+

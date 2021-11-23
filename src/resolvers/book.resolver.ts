@@ -14,7 +14,6 @@ import { Book } from "../entity/book.entity";
 import { Length } from "class-validator";
 import { IContext, isAuth } from "../middlewares/auth.middleware";
 import { BookLoan } from "../entity/bookLoan.entity";
-import { query } from "express";
 
 //input para crear un libro
 @InputType()
@@ -63,6 +62,9 @@ class LoanInput {
 
   @Field()
   bookId?: number;
+
+  @Field(() => String)
+  isOnLoan?: string;
 }
 
 @Resolver()
@@ -206,6 +208,7 @@ export class BookResolver {
       }
     }
   }
+
   //Mutation - Prestar un libro
   @Mutation(() => BookLoan)
   async loan(
@@ -224,6 +227,7 @@ export class BookResolver {
       const loanBook = await this.bookLoanRepository.insert({
         returned_date: input.returned_date,
         books: book,
+        //isOnLoan: input.isOnLoan,
       });
       const result = await this.bookLoanRepository.findOne(
         loanBook.identifiers[0].id,
@@ -244,4 +248,17 @@ export class BookResolver {
       relations: ["books", "books.author"],
     });
   }
+
+  //   //Query devuelve todos los libro prestados
+  //   @Query(() => [Book])
+  //   async getAllBookLoans(): Promise<Book[]> {
+  //     return await this.bookRepository
+  //       .createQueryBuilder("book")
+  //       .leftJoinAndSelect("book.bookLoan", "books")
+  //       .where("books.isOnLoan = :isOnLoan", { isOnLoan: true })
+  //       // .select("bookLoan")
+  //       // .from(BookLoan, "bookLoan")
+  //       // .leftJoinAndSelect("bookLoan.books", "loanBooks")
+  //       .getMany();
+  //   }
 }
