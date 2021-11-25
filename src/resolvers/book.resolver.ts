@@ -62,9 +62,6 @@ class LoanInput {
 
   @Field()
   bookId?: number;
-
-  @Field(() => String)
-  isOnLoan?: string;
 }
 
 @Resolver()
@@ -233,6 +230,11 @@ export class BookResolver {
         loanBook.identifiers[0].id,
         { relations: ["books"] }
       );
+      //actualiza el libro como prestado
+      await this.bookRepository.save({
+        id: input.bookId,
+        isOnLoan: true,
+      });
       return result;
     } catch (e) {
       if (e instanceof Error) {
