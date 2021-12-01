@@ -6,8 +6,6 @@ import {
   CreateDateColumn,
   ManyToOne,
   OneToMany,
-  OneToOne,
-  JoinColumn,
 } from "typeorm";
 import { Author } from "./author.entity";
 import { BookLoan } from "./bookLoan.entity";
@@ -23,7 +21,7 @@ export class Book {
   @Column()
   title!: string;
 
-  @Field(() => Author)
+  @Field(() => Author, { nullable: true })
   //onDelete, cuando borre un author borra todos sus libros tambien
   @ManyToOne(() => Author, (author) => author.books, { onDelete: "CASCADE" })
   author!: Author;

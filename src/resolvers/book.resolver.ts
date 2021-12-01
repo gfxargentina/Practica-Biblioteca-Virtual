@@ -130,6 +130,7 @@ export class BookResolver {
 
   //Query - trae un libro por id
   @Query(() => Book)
+  @UseMiddleware(isAuth)
   async getBookById(
     @Arg("input", () => BookIdInput) input: BookIdInput
   ): Promise<Book | undefined> {
@@ -152,6 +153,7 @@ export class BookResolver {
 
   //Mutation - actualizar un libro
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async updateBookByID(
     @Arg("bookId", () => BookIdInput) bookId: BookIdInput,
     @Arg("input", () => BookUpdateInput) input: BookUpdateInput
@@ -169,6 +171,7 @@ export class BookResolver {
 
   //Mutation - Eliminar un libro
   @Mutation(() => Boolean)
+  @UseMiddleware(isAuth)
   async deleteBook(
     @Arg("bookId", () => BookIdInput) bookId: BookIdInput
   ): Promise<Boolean | undefined> {
@@ -208,6 +211,7 @@ export class BookResolver {
 
   //Mutation - Prestar un libro
   @Mutation(() => BookLoan)
+  @UseMiddleware(isAuth)
   async loan(
     @Arg("input", () => LoanInput) input: LoanInput
   ): Promise<BookLoan | undefined> {
@@ -245,22 +249,34 @@ export class BookResolver {
 
   //Query devuelve todos los prestamos
   @Query(() => [BookLoan])
+  @UseMiddleware(isAuth)
   async getAllLoans(): Promise<BookLoan[]> {
     return await this.bookLoanRepository.find({
-      relations: ["books", "books.author"],
+      relations: ["books", "books.author", "books.bookLoan"],
     });
   }
 
-  //   //Query devuelve todos los libro prestados
-  //   @Query(() => [Book])
-  //   async getAllBookLoans(): Promise<Book[]> {
-  //     return await this.bookRepository
-  //       .createQueryBuilder("book")
-  //       .leftJoinAndSelect("book.bookLoan", "books")
-  //       .where("books.isOnLoan = :isOnLoan", { isOnLoan: true })
-  //       // .select("bookLoan")
-  //       // .from(BookLoan, "bookLoan")
-  //       // .leftJoinAndSelect("bookLoan.books", "loanBooks")
-  //       .getMany();
-  //   }
+  //query
+  @Query(() => [Author])
+  @UseMiddleware(isAuth)
+  async getAllLoansByAuthor(): Promise<Author[]> {
+    return await this.authorRepository
+      .createQueryBuilder("author")
+      .leftJoinAndSelect("author.books", "books")
+      .leftJoinAndSelect("author.bookLoan", "returned")
+      .where("books.isOnLoan = :isOnLoan", { isOnLoan: true })
+      .getMany();
+  }
+
+  //query loans
+  @Query(() => [BookLoan])
+  @UseMiddleware(isAuth)
+  async getAllLoansByLoans(): Promise<BookLoan[]> {
+    return await this.bookLoanRepository
+      .createQueryBuilder("loans")
+      .leftJoinAndSelect("loans.books", "books")
+      //.leftJoinAndSelect("loans.books.author", "author")
+      .where("books.isOnLoan = :isOnLoan", { isOnLoan: true })
+      .getMany();
+  }
 }
