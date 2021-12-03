@@ -17,7 +17,10 @@ export class BookLoan {
   id!: number;
 
   @Field(() => Book, { nullable: true })
-  @ManyToOne(() => Book, (book) => book.bookLoan)
+  @ManyToOne(() => Book, (book) => book.bookLoan, {
+    onDelete: "CASCADE",
+    nullable: true,
+  })
   books?: Book;
 
   @Field(() => [Author], { nullable: true })

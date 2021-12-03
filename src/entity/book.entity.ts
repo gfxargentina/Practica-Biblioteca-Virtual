@@ -31,7 +31,10 @@ export class Book {
   isOnLoan?: Boolean;
 
   @Field(() => [BookLoan], { nullable: true })
-  @OneToMany(() => BookLoan, (bookLoan) => bookLoan.books)
+  @OneToMany(() => BookLoan, (bookLoan) => bookLoan.books, {
+    onDelete: "CASCADE",
+    nullable: true,
+  })
   bookLoan!: BookLoan[];
 
   @Field()
