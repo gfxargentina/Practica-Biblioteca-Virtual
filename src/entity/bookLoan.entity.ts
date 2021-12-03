@@ -28,8 +28,8 @@ export class BookLoan {
   bookLoan!: Author[];
 
   @Field()
-  @CreateDateColumn({ type: "timestamp" })
-  createdAt!: String;
+  @CreateDateColumn()
+  createdAt!: Date;
 
   @Field({ nullable: true })
   @CreateDateColumn()
