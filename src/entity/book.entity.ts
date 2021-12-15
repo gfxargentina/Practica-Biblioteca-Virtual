@@ -17,7 +17,7 @@ export class Book {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
+  @Field({ nullable: true })
   @Column()
   title!: string;
 

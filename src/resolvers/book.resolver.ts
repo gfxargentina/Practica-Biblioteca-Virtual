@@ -58,7 +58,10 @@ class BookUpdateParsedInput {
 @InputType()
 class LoanInput {
   @Field()
-  returned_date!: string;
+  createdAt!: string;
+
+  @Field()
+  returned_date?: string;
 
   @Field()
   bookId?: number;
@@ -227,6 +230,7 @@ export class BookResolver {
 
       const loanBook = await this.bookLoanRepository.insert({
         returned_date: input.returned_date,
+        createdAt: input.createdAt,
         books: book,
         //isOnLoan: input.isOnLoan,
       });
@@ -241,6 +245,7 @@ export class BookResolver {
       });
       return result;
     } catch (e) {
+      console.log(e);
       if (e instanceof Error) {
         throw new Error(e.message);
       }

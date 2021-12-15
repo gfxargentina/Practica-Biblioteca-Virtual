@@ -4,6 +4,7 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
+  Column,
 } from "typeorm";
 import { Field, ObjectType } from "type-graphql";
 import { Book } from "./book.entity";
@@ -27,11 +28,11 @@ export class BookLoan {
   @OneToMany(() => Author, (author) => author.bookLoan, { nullable: true })
   bookLoan!: Author[];
 
-  @Field()
-  @CreateDateColumn()
-  createdAt!: Date;
+  @Field({ nullable: true })
+  @Column()
+  createdAt!: String;
 
   @Field({ nullable: true })
-  @CreateDateColumn()
-  returned_date?: Date;
+  @Column()
+  returned_date?: String;
 }
