@@ -78,6 +78,7 @@ mutation{
 //TRAE TODOS LOS LIBROS
 query{
   getAllBooks{
+    id
     title
     author{
       id

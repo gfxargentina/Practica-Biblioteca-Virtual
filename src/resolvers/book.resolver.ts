@@ -67,6 +67,13 @@ class LoanInput {
   bookId?: number;
 }
 
+//book return input
+@InputType()
+class BookReturnInput {
+  @Field()
+  bookId!: number;
+}
+
 @Resolver()
 export class BookResolver {
   //creamos los repositorios que utilizaremos
@@ -232,7 +239,6 @@ export class BookResolver {
         returned_date: input.returned_date,
         createdAt: input.createdAt,
         books: book,
-        //isOnLoan: input.isOnLoan,
       });
       const result = await this.bookLoanRepository.findOne(
         loanBook.identifiers[0].id,
@@ -242,6 +248,36 @@ export class BookResolver {
       await this.bookRepository.save({
         id: input.bookId,
         isOnLoan: true,
+      });
+      return result;
+    } catch (e) {
+      console.log(e);
+      if (e instanceof Error) {
+        throw new Error(e.message);
+      }
+    }
+  }
+
+  //Mutation devolver un libro
+  @Mutation(() => Book)
+  @UseMiddleware(isAuth)
+  async bookReturn(
+    @Arg("input", () => BookReturnInput) input: BookReturnInput
+  ): Promise<Book | undefined> {
+    try {
+      const book: Book | undefined = await this.bookRepository.findOne(
+        input.bookId
+      );
+      if (!book) {
+        const error = new Error();
+        error.message = "El libro no existe";
+        throw error;
+      }
+
+      //actualiza el libro como devuelto
+      const result = await this.bookRepository.save({
+        id: input.bookId,
+        isOnLoan: false,
       });
       return result;
     } catch (e) {
