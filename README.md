@@ -1,4 +1,4 @@
-#Practica del Curso de Nodejs de Start Coding AI.
+##Practica del Curso de Nodejs de Start Coding AI.
 
 **1-** Instalar dependecias en backend y frontend- npm install
 
