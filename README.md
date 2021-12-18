@@ -10,4 +10,4 @@
 
 **Client:** React/NextJS, TailwindCSS
 
-**Server:** Node, Express, Apollo/Graphql, Mysql, Typescript, TypeORM, TypeGraphql
+**Server:** Node, Express, Apollo/Graphql, PostgresQL, Typescript, TypeORM, TypeGraphql
