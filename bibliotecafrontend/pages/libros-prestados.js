@@ -1,10 +1,6 @@
 import React, { useEffect } from "react";
 import Layout from "../components/Layout";
 import { useQuery, gql } from "@apollo/client";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
-
-dayjs.extend(customParseFormat);
 
 export const GET_ALL_LOANS = gql`
   query {
@@ -27,11 +23,16 @@ export const GET_ALL_LOANS = gql`
 
 const LibrosPrestados = () => {
   const { data, loading, error } = useQuery(GET_ALL_LOANS);
-  //console.log(data);
+  console.log(data);
 
   if (loading) {
     return <p>Data is loading...</p>;
   }
+
+  // if (!data) {
+  //   return <h1>Todavia no hay Libros Prestados para mostrar</h1>;
+  // }
+
   if (error) return `Error! ${error.message}`;
 
   return (
